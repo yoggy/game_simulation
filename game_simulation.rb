@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 
-$team_num    = 2 
 $probrem_num = 5 
 $iteration_num = 10
 $tick = 1 / $iteration_num.to_f
@@ -12,6 +11,14 @@ class Server
 		@num        = num
 		@up         = false
 		@vulnerable = true
+	end
+
+	def up
+		@up = true
+	end
+
+	def down
+		@up = false
 	end
 
 	def up?
@@ -42,8 +49,6 @@ class Server
 
 		str
 	end
-
-	attr_accessor :num, :up, :vulnerable
 end
 
 class Problem
@@ -146,6 +151,12 @@ class Team
 	end
 
 	def manage_servers
+		@servers.each_with_index {|s, i|
+			p = @problems[i]
+			if p.analized?
+				s.up
+			end
+		}
 	end
 
 	def solve
@@ -159,10 +170,16 @@ class Team
 		}
 	end
 
+	def check_network
+		@problems.each_with_index{|p, i|
+		}
+	end
+
 	def action
 		manage_servers
 		solve
 		attack
+		check_network
 	end
 	
 	def next_state
@@ -190,13 +207,11 @@ end
 
 def setup_teams
 	# test...
-	$team_num.times {|n|
-		$teams << Team.new(n, 0.5, 0.5)
-	}
+	$teams << Team.new(0, 0.2, 0.2)
+	$teams << Team.new(1, 0.5, 0.5)
 end
 
 def simulation_loop
-
 	$iteration_num.times {|n|
 		# for debug
 		puts "================ iteration=#{n} ================"
