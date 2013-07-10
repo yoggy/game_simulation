@@ -82,11 +82,11 @@ class Problem
 		@progress += $tick * solve_power 
 
 		if !analized?
-			if @progress >= @difficulty * 0.5
+			if @progress >= @difficulty * 0.2
 				@next_status = ANALIZED
 			end
 		elsif !can_defence?
-			if @progress >= @difficulty * 0.6
+			if @progress >= @difficulty * 0.5
 				@next_status = CAN_DEFENCE
 			end
 		elsif !can_dos?
@@ -176,11 +176,10 @@ class Team
 
 	def to_s
 		str = "team#{@num} : steal_key_num=#{@steal_key_num}, overwrite_key_num=#{@overwrite_key_num}, total_sla=#{@total_sla}\n  "
-		@problems.each {|s|
+		@servers.each {|s|
 			str << s.to_s << ", "
 		}
-		str << "\n  "
-		@servers.each {|s|
+		@problems.each {|s|
 			str << s.to_s << ", "
 		}
 		str
