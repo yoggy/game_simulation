@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 
-$team_num    = 10 
-$probrem_num = 10
+$team_num    = 2 
+$probrem_num = 5 
 $iteration_num = 10
 $tick = 1 / $iteration_num.to_f
 
@@ -122,8 +122,8 @@ class Problem
 end
 
 class Team
-	def initialize(name, solve_power, network_power)
-		@name              = name
+	def initialize(num, solve_power, network_power)
+		@num               = num
 		@solve_power       = solve_power    # 0.0 - 1.0
 		@network_power     = network_power  # 0.0 - 1.0
 
@@ -175,7 +175,7 @@ class Team
 	end
 
 	def to_s
-		str = "team=#{@name} : steal_key_num=#{@steal_key_num}, overwrite_key_num=#{@overwrite_key_num}, total_sla=#{@total_sla}\n  "
+		str = "team#{@num} : steal_key_num=#{@steal_key_num}, overwrite_key_num=#{@overwrite_key_num}, total_sla=#{@total_sla}\n  "
 		@problems.each {|s|
 			str << s.to_s << ", "
 		}
@@ -191,11 +191,9 @@ end
 
 def setup_teams
 	# test...
-	t = Team.new("team01", 0.5, 0.5)
-	$teams << t
-
-	t = Team.new("team02", 0.5, 0.5)
-	$teams << t
+	$team_num.times {|n|
+		$teams << Team.new(n, 0.5, 0.5)
+	}
 end
 
 def simulation_loop
